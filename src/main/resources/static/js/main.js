@@ -16,14 +16,16 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-function connect(event) {
-    username = document.querySelector('#name').value.trim();
 
+function connect(event) {
+
+    username = document.querySelector('#name').value.trim();
+    username = "dima";
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        var socket = new SockJS('/javatechie');
+        var socket = new SockJS('http://localhost:8080/javatechie');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);

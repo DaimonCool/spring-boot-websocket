@@ -1,4 +1,4 @@
-package com.javatechie.spring.ws.api;
+package com.dashko.spring.ws.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

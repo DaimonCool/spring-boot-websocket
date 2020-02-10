@@ -9,7 +9,7 @@
 		<version>2.1.2.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.javatechie</groupId>
+	<groupId>com.dashko</groupId>
 	<artifactId>spring-boot-websocket</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-websocket</name>
