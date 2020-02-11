@@ -5,10 +5,6 @@ public class ChatMessage {
 	private String sender;
 	private MessageType type;
 
-	public enum MessageType {
-		CHAT, LEAVE, JOIN
-	}
-
 	public String getContent() {
 		return content;
 	}

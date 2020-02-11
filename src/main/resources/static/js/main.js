@@ -20,12 +20,11 @@ var colors = [
 function connect(event) {
 
     username = document.querySelector('#name').value.trim();
-    username = "dima";
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        var socket = new SockJS('http://localhost:8080/javatechie');
+        var socket = new SockJS('http://EPKZKARW0555:8080/javatechie');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
@@ -74,9 +73,27 @@ function send(event) {
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
 
+    if(message.type === 'JOIN') {
+        if(message.sender === username){
+            message.messages.forEach(function(innerMessage){
+                console.log(innerMessage + "  fda")
+                addMessage(innerMessage)
+            })
+        } else {
+            addMessage(message);
+        }
+    } else {
+        addMessage(message);
+    }
+
+}
+
+function addMessage(message){
+
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
+        console.log(message.content);
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
     } else if (message.type === 'LEAVE') {
@@ -107,7 +124,6 @@ function onMessageReceived(payload) {
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
-
 
 function getAvatarColor(messageSender) {
     var hash = 0;

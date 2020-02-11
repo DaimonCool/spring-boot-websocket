@@ -1,26 +1,34 @@
 package com.dashko.spring.ws.api.controller;
 
 import com.dashko.spring.ws.api.model.ChatMessage;
+import com.dashko.spring.ws.api.model.JoinChat;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class ChatController {
 
-	@MessageMapping("/chat.register")
-	@SendTo("/topic/public")
-	public ChatMessage register(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-		headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-		return chatMessage;
-	}
+    private List<ChatMessage> messages = new ArrayList<>();
 
-	@MessageMapping("/chat.send")
-	@SendTo("/topic/public")
-	public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
-		return chatMessage;
-	}
+    @MessageMapping("/chat.register")
+    @SendTo("/topic/public")
+    public JoinChat register(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
+        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        messages.add(chatMessage);
+        return new JoinChat(chatMessage.getSender(), chatMessage.getType(), messages);
+    }
+
+    @MessageMapping("/chat.send")
+    @SendTo("/topic/public")
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+        messages.add(chatMessage);
+        return chatMessage;
+    }
 
 }
