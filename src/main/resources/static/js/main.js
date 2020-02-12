@@ -24,7 +24,7 @@ function connect(event) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        var socket = new SockJS('http://EPKZKARW0555:8080/javatechie');
+        var socket = new SockJS('http://ec2-18-191-219-239.us-east-2.compute.amazonaws.com/javatechie');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
