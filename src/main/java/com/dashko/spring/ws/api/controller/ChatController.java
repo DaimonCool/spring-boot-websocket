@@ -2,6 +2,7 @@ package com.dashko.spring.ws.api.controller;
 
 import com.dashko.spring.ws.api.model.ChatMessage;
 import com.dashko.spring.ws.api.model.JoinChat;
+import com.dashko.spring.ws.api.model.MessageType;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -27,7 +28,9 @@ public class ChatController {
     @MessageMapping("/chat.send")
     @SendTo("/topic/public")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
-        messages.add(chatMessage);
+        if (!chatMessage.getType().equals(MessageType.TYPING)) {
+            messages.add(chatMessage);
+        }
         return chatMessage;
     }
 

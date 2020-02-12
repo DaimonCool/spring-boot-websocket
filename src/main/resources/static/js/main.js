@@ -24,7 +24,7 @@ function connect(event) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        var socket = new SockJS('http://ec2-18-191-219-239.us-east-2.compute.amazonaws.com/javatechie');
+        var socket = new SockJS('http://EPKZKARW0555:8080/javatechie');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
@@ -69,6 +69,18 @@ function send(event) {
     event.preventDefault();
 }
 
+function typing() {
+    if(stompClient) {
+        var chatMessage = {
+            sender: username,
+            content: null,
+            type: 'TYPING'
+        };
+
+        stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+    }
+}
+
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
@@ -88,17 +100,37 @@ function onMessageReceived(payload) {
 
 }
 
+let typingTimeout;
+let typingId = username + "-typing";
 function addMessage(message){
 
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
-        console.log(message.content);
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
-    } else if (message.type === 'LEAVE') {
+    } else if(message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
+        message.content = message.sender + ' joined!';
+    } else if (message.type === 'TYPING') {
+        let typingLi = document.getElementById(typingId);
+
+        if(typingLi != null){
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(function(){
+                document.getElementById(typingId).remove();
+            }, 1000)
+
+            return;
+        }
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' is typing';
+        messageElement.id = typingId;
+
+        typingTimeout = setTimeout(function(){
+            document.getElementById(messageElement.id).remove();
+        }, 1000)
+
     } else {
         messageElement.classList.add('chat-message');
 
@@ -114,15 +146,15 @@ function addMessage(message){
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
     }
+        var textElement = document.createElement('p');
+        var messageText = document.createTextNode(message.content);
+        textElement.appendChild(messageText);
 
-    var textElement = document.createElement('p');
-    var messageText = document.createTextNode(message.content);
-    textElement.appendChild(messageText);
+        messageElement.appendChild(textElement);
 
-    messageElement.appendChild(textElement);
+        messageArea.appendChild(messageElement);
+        messageArea.scrollTop = messageArea.scrollHeight;
 
-    messageArea.appendChild(messageElement);
-    messageArea.scrollTop = messageArea.scrollHeight;
 }
 
 function getAvatarColor(messageSender) {
@@ -137,3 +169,4 @@ function getAvatarColor(messageSender) {
 
 usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', send, true)
+messageInput.addEventListener('input', typing, false)
