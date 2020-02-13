@@ -101,18 +101,19 @@ function onMessageReceived(payload) {
 }
 
 let typingTimeout;
-let typingId = username + "-typing";
 function addMessage(message){
 
-    var messageElement = document.createElement('li');
+    let typingId = message.sender + "-typing";
+    let messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
     } else if(message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
-    } else if (message.type === 'TYPING') {
+        message.content = message.sender + ' left!';
+    } else if (message.type === 'TYPING' && message.sender != username) {
+
         let typingLi = document.getElementById(typingId);
 
         if(typingLi != null){
@@ -128,8 +129,9 @@ function addMessage(message){
         messageElement.id = typingId;
 
         typingTimeout = setTimeout(function(){
-            document.getElementById(messageElement.id).remove();
+            document.getElementById(typingId).remove();
         }, 1000)
+
 
     } else {
         messageElement.classList.add('chat-message');
@@ -145,15 +147,28 @@ function addMessage(message){
         var usernameText = document.createTextNode(message.sender);
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
+
+
     }
-        var textElement = document.createElement('p');
-        var messageText = document.createTextNode(message.content);
-        textElement.appendChild(messageText);
 
-        messageElement.appendChild(textElement);
+        if(message.content != null){
+            var textElement = document.createElement('p');
+            var messageText = document.createTextNode(message.content);
+            textElement.appendChild(messageText);
 
-        messageArea.appendChild(messageElement);
-        messageArea.scrollTop = messageArea.scrollHeight;
+            messageElement.appendChild(textElement);
+
+            messageArea.appendChild(messageElement);
+            messageArea.scrollTop = messageArea.scrollHeight;
+
+            if(message.type === 'CHAT') {
+                let typingElement = document.getElementById(typingId);
+                if(typingElement != null) {
+                    typingElement.remove();
+                }
+            }
+
+       }
 
 }
 
