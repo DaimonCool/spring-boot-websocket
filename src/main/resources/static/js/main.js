@@ -35,13 +35,23 @@ function connect(event) {
 
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
+    if(username === 'dima' || username === 'kolya') {
+        stompClient.subscribe('/topic/public/10', onMessageReceived);
 
-    // Tell your username to the server
-    stompClient.send("/app/chat.register",
-        {},
-        JSON.stringify({sender: username, type: 'JOIN'})
-    )
+        // Tell your username to the server
+        stompClient.send("/app/chat.register/10",
+            {},
+            JSON.stringify({sender: username, type: 'JOIN'})
+        )
+    } else {
+        stompClient.subscribe('/topic/public/1', onMessageReceived);
+
+        // Tell your username to the server
+        stompClient.send("/app/chat.register/1",
+            {},
+            JSON.stringify({sender: username, type: 'JOIN'})
+        )
+    }
 
     connectingElement.classList.add('hidden');
 }
@@ -63,7 +73,11 @@ function send(event) {
             type: 'CHAT'
         };
 
-        stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+        if(username === 'dima' || username === 'kolya') {
+            stompClient.send("/app/chat.send/10", {}, JSON.stringify(chatMessage));
+        } else {
+            stompClient.send("/app/chat.send/1", {}, JSON.stringify(chatMessage));
+        }
         messageInput.value = '';
     }
     event.preventDefault();
@@ -77,7 +91,11 @@ function typing() {
             type: 'TYPING'
         };
 
-        stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+        if(username === 'dima' || username === 'kolya') {
+            stompClient.send("/app/chat.send/10", {}, JSON.stringify(chatMessage));
+        } else {
+            stompClient.send("/app/chat.send/1", {}, JSON.stringify(chatMessage));
+        }
     }
 }
 
@@ -100,8 +118,21 @@ function onMessageReceived(payload) {
 
 }
 
-let typingTimeout;
+//let typingTimeout;
+const typingTimeoutMap = new Map();
 function addMessage(message){
+
+    let typingTimeoutUserKey = message.sender + "-timeout";
+    let typingTimeout;
+    console.log(typingTimeoutMap);
+    if(typingTimeoutMap.has(typingTimeoutUserKey)) {
+        console.log('has');
+        typingTimeout = typingTimeoutMap.get(typingTimeoutUserKey);
+    } else {
+        console.log('doesnt');
+        typingTimeoutMap.set(typingTimeoutUserKey, typingTimeout);
+    }
+
 
     let typingId = message.sender + "-typing";
     let messageElement = document.createElement('li');
@@ -117,7 +148,6 @@ function addMessage(message){
         let typingLi = document.getElementById(typingId);
 
         if(typingLi != null){
-        console.log("here")
             clearTimeout(typingTimeout);
             typingTimeout = setTimeout(function(){
                 let typingElement = document.getElementById(typingId);
@@ -125,6 +155,7 @@ function addMessage(message){
                     typingElement.remove();
                 }
             }, 1000)
+            typingTimeoutMap.set(typingTimeoutUserKey, typingTimeout);
 
             return;
         }
@@ -132,12 +163,14 @@ function addMessage(message){
         message.content = message.sender + ' is typing';
         messageElement.id = typingId;
 
+
         typingTimeout = setTimeout(function(){
             let typingElement = document.getElementById(typingId);
             if(typingElement != null) {
                 typingElement.remove();
             }
         }, 1000)
+        typingTimeoutMap.set(typingTimeoutUserKey, typingTimeout);
 
 
     } else {
