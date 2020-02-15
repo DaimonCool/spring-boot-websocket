@@ -1,0 +1,23 @@
+#cloud:
+#  aws:
+#    rds:
+#      aws-daimon-db:
+#        password: Pavilion23xi
+
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+  datasource:
+    driverClassName: org.postgresql.Driver
+    username: daimoncool
+    password: Pavilion23xi
+    url: jdbc:postgresql://aws-daimon-db.c7flxk5cyw0g.us-east-2.rds-preview.amazonaws.com:5432/daimon_db
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        physical_naming_strategy: com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy
+        jdbc:
+          time_zone: UTC
+        ddl-auto: none

@@ -24,7 +24,7 @@ function connect(event) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        let socket = new SockJS('http://EPKZKARW0555:8080/javatechie');
+        let socket = new SockJS('http://localhost:8080/javatechie');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
@@ -41,7 +41,7 @@ function onConnected() {
         // Tell your username to the server
         stompClient.send("/app/chat.register/10",
             {},
-            JSON.stringify({sender: username, type: 'JOIN'})
+            JSON.stringify({sender: username, content: username + " joined!", type: 'JOIN'})
         )
     } else {
         stompClient.subscribe('/topic/public/1', onMessageReceived);
@@ -49,7 +49,7 @@ function onConnected() {
         // Tell your username to the server
         stompClient.send("/app/chat.register/1",
             {},
-            JSON.stringify({sender: username, type: 'JOIN'})
+            JSON.stringify({sender: username, content: username + " joined!", type: 'JOIN'})
         )
     }
 

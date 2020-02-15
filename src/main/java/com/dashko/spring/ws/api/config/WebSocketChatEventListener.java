@@ -1,7 +1,7 @@
 package com.dashko.spring.ws.api.config;
 
-import com.dashko.spring.ws.api.model.ChatMessage;
-import com.dashko.spring.ws.api.model.MessageType;
+import com.dashko.spring.ws.api.model.dto.ChatMessageDTO;
+import com.dashko.spring.ws.api.model.dto.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -26,10 +26,10 @@ public class WebSocketChatEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String username = (String) headerAccessor.getSessionAttributes().get("username");
         if (username != null) {
-            ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setType(MessageType.LEAVE);
-            chatMessage.setSender(username);
-            messagingTemplate.convertAndSend("/topic/public", chatMessage);
+            ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
+            chatMessageDTO.setType(MessageType.LEAVE);
+            chatMessageDTO.setSender(username);
+            messagingTemplate.convertAndSend("/topic/public", chatMessageDTO);
         }
     }
 }
