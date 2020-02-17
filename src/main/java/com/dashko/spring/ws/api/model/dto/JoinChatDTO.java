@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class JoinChatDTO {
     private String sender;
-    private MessageType type;
+    private MessageTypeEnum type;
     private List<ChatMessageDTO> messages;
 
 }

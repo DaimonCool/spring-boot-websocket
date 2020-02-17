@@ -53,6 +53,8 @@ function onConnected() {
         )
     }
 
+    //document.getElementById("message-loading").innerText = "Loading messages...";
+
     connectingElement.classList.add('hidden');
 }
 
@@ -139,10 +141,8 @@ function addMessage(message){
 
     if(message.type === 'JOIN') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
     } else if(message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
     } else if (message.type === 'TYPING' && message.sender != username) {
 
         let typingLi = document.getElementById(typingId);

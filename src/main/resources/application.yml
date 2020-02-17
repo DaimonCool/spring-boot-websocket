@@ -1,9 +1,3 @@
-#cloud:
-#  aws:
-#    rds:
-#      aws-daimon-db:
-#        password: Pavilion23xi
-
 spring:
   http:
     encoding:
