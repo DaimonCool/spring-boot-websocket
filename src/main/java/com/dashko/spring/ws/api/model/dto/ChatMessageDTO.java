@@ -1,6 +1,7 @@
 package com.dashko.spring.ws.api.model.dto;
 
 import com.dashko.spring.ws.api.model.Message;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Data
 public class ChatMessageDTO {
     private String content;
     private String sender;

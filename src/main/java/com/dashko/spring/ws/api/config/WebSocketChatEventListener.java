@@ -36,7 +36,7 @@ public class WebSocketChatEventListener {
             chatMessageDTO.setSender(username);
             chatMessageDTO.setContent(username + " left!");
             messageService.saveMessage(chatMessageDTO, Long.parseLong(chatId));
-            messagingTemplate.convertAndSend("/topic/public", chatMessageDTO);
+            messagingTemplate.convertAndSend("/topic/public/" + chatId, chatMessageDTO);
         }
     }
 }

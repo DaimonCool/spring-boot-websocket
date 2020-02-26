@@ -13,6 +13,9 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
@@ -26,10 +29,15 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("username", chatMessageDTO.getSender());
         headerAccessor.getSessionAttributes().put("chatId", id);
         val chatId = Long.parseLong(id);
-        messageService.saveMessage(chatMessageDTO, chatId);
+
         val messages = messageService.getLastMessages(chatId, 0, 30);
         messages.add(chatMessageDTO);
-        return new JoinChatDTO(chatMessageDTO.getSender(), chatMessageDTO.getType(), messages);
+        messageService.saveMessage(chatMessageDTO, chatId);
+
+        return new JoinChatDTO(chatMessageDTO.getSender(),
+                chatMessageDTO.getType(),
+                chatMessageDTO.getContent(),
+                messages);
     }
 
     @MessageMapping("/chat.send/{id}")

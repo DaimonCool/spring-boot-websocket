@@ -28,7 +28,7 @@ function connect(event) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        let socket = new SockJS('http://ec2-18-191-219-239.us-east-2.compute.amazonaws.com/javatechie');
+        let socket = new SockJS('http://localhost:8080/javatechie');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
@@ -129,12 +129,9 @@ function addMessage(message, isBottom, currentScroll = 0){
 
     let typingTimeoutUserKey = message.sender + "-timeout";
     let typingTimeout;
-    console.log(typingTimeoutMap);
     if(typingTimeoutMap.has(typingTimeoutUserKey)) {
-        console.log('has');
         typingTimeout = typingTimeoutMap.get(typingTimeoutUserKey);
     } else {
-        console.log('doesnt');
         typingTimeoutMap.set(typingTimeoutUserKey, typingTimeout);
     }
 
@@ -206,8 +203,6 @@ function addMessage(message, isBottom, currentScroll = 0){
                 messageArea.scrollTop = messageArea.scrollHeight;
             } else {
                 messageArea.insertBefore(messageElement, messageArea.firstChild);
-                console.log(messageArea.scrollHeight + " h")
-                console.log(currentScroll + " c")
                 messageArea.scrollTop = messageArea.scrollHeight - currentScroll;
             }
 
@@ -248,7 +243,7 @@ $("#messageArea").on("scroll",function() {
 
 async function loadMessages() {
     loadingElement.classList.remove('hidden');
-    let response = await fetch("http://ec2-18-191-219-239.us-east-2.compute.amazonaws.com/chat/1/messages?page=" + page + "&messagesNum=" + messagesNum);
+    let response = await fetch("http://localhost:8080/chat/1/messages?page=" + page + "&messagesNum=" + messagesNum);
 
     if (response.ok) {
       page++;
@@ -259,7 +254,6 @@ async function loadMessages() {
       let currentScroll = messageArea.scrollHeight
       messages.forEach(message => addMessage(message, false, currentScroll));
 
-      console.log(messages);
     } else {
       alert("Ошибка HTTP: " + response.status);
     }
