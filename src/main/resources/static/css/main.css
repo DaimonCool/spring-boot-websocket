@@ -249,7 +249,16 @@ button.accent {
 }
 
 .connecting {
-    padding-top: 5px;
+    padding-top: 3px;
+    text-align: center;
+    color: #777;
+    position: absolute;
+    top: 65px;
+    width: 100%;
+}
+
+.loading {
+    padding-top: 3px;
     text-align: center;
     color: #777;
     position: absolute;

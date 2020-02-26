@@ -17,6 +17,9 @@ let colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
+let page = 1;
+let messagesNum = 30;
+
 
 function connect(event) {
 
@@ -54,9 +57,8 @@ function onConnected() {
         )
     }
 
-    //document.getElementById("message-loading").innerText = "Loading messages...";
-
     connectingElement.classList.add('hidden');
+    loadingElement.classList.remove('hidden');
 }
 
 
@@ -110,20 +112,20 @@ function onMessageReceived(payload) {
         if(message.sender === username){
             message.messages.forEach(function(innerMessage){
                 loadingElement.classList.add('hidden');
-                addMessage(innerMessage)
+                addMessage(innerMessage, true)
             })
         } else {
-            addMessage(message);
+            addMessage(message, true);
         }
     } else {
-        addMessage(message);
+        addMessage(message, true);
     }
 
 }
 
 //let typingTimeout;
 const typingTimeoutMap = new Map();
-function addMessage(message){
+function addMessage(message, isBottom, currentScroll = 0){
 
     let typingTimeoutUserKey = message.sender + "-timeout";
     let typingTimeout;
@@ -199,8 +201,15 @@ function addMessage(message){
 
             messageElement.appendChild(textElement);
 
-            messageArea.appendChild(messageElement);
-            messageArea.scrollTop = messageArea.scrollHeight;
+            if(isBottom){
+                messageArea.appendChild(messageElement);
+                messageArea.scrollTop = messageArea.scrollHeight;
+            } else {
+                messageArea.insertBefore(messageElement, messageArea.firstChild);
+                console.log(messageArea.scrollHeight + " h")
+                console.log(currentScroll + " c")
+                messageArea.scrollTop = messageArea.scrollHeight - currentScroll;
+            }
 
             if(message.type === 'CHAT') {
                 let typingElement = document.getElementById(typingId);
@@ -224,8 +233,6 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-let page = 1;
-let messagesNum = 30;
 $("#messageArea").on("scroll",function() {
     let contentDiv = $(this);
     contentDiv.addClass("scrolling");
@@ -240,16 +247,23 @@ $("#messageArea").on("scroll",function() {
 });
 
 async function loadMessages() {
+    loadingElement.classList.remove('hidden');
     let response = await fetch("http://localhost:8080/chat/1/messages?page=" + page + "&messagesNum=" + messagesNum);
 
     if (response.ok) {
-      let json = await response.json();
-      console.log(json)
+      page++;
+      messagesNum++;
+
+      let messages = await response.json();
+      messages = messages.reverse();
+      let currentScroll = messageArea.scrollHeight
+      messages.forEach(message => addMessage(message, false, currentScroll));
+
+      console.log(messages);
     } else {
       alert("Ошибка HTTP: " + response.status);
     }
-    page++;
-    messagesNum++;
+    loadingElement.classList.add('hidden');
 }
 
 usernameForm.addEventListener('submit', connect, true)
