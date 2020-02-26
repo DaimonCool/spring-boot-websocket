@@ -3,6 +3,7 @@ package com.dashko.spring.ws.api.model.dto;
 import com.dashko.spring.ws.api.model.Message;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +17,7 @@ public class ChatMessageDTO {
 
 
     public static ChatMessageDTO from(Message message) {
-        ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
+        val chatMessageDTO = new ChatMessageDTO();
         chatMessageDTO.setSender(message.getSender());
         chatMessageDTO.setContent(message.getMessage());
         chatMessageDTO.setType(MessageTypeEnum.valueOf(message.getMessageType().getTypeName()));

@@ -7,6 +7,7 @@ let messageForm = document.querySelector('#messageForm');
 let messageInput = document.querySelector('#message');
 let messageArea = document.querySelector('#messageArea');
 let connectingElement = document.querySelector('.connecting');
+let loadingElement = document.querySelector('.loading');
 
 let stompClient = null;
 let username = null;
@@ -108,7 +109,7 @@ function onMessageReceived(payload) {
     if(message.type === 'JOIN') {
         if(message.sender === username){
             message.messages.forEach(function(innerMessage){
-                console.log(innerMessage + "  fda")
+                loadingElement.classList.add('hidden');
                 addMessage(innerMessage)
             })
         } else {
@@ -223,6 +224,35 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
+let page = 1;
+let messagesNum = 30;
+$("#messageArea").on("scroll",function() {
+    let contentDiv = $(this);
+    contentDiv.addClass("scrolling");
+
+    if(contentDiv.scrollTop() === 0) {
+        loadMessages();
+        contentDiv.removeClass("nottop");
+     } else {
+        contentDiv.addClass("nottop");
+     }
+
+});
+
+async function loadMessages() {
+    let response = await fetch("http://localhost:8080/chat/1/messages?page=" + page + "&messagesNum=" + messagesNum);
+
+    if (response.ok) {
+      let json = await response.json();
+      console.log(json)
+    } else {
+      alert("Ошибка HTTP: " + response.status);
+    }
+    page++;
+    messagesNum++;
+}
+
 usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', send, true)
+messageInput.addEventListener('input', typing, false)
 messageInput.addEventListener('input', typing, false)
