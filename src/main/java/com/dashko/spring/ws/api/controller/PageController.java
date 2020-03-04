@@ -6,8 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PageController {
 
-    @GetMapping("/main")
+    @GetMapping("/chats")
     public String getMainPage(){
-        return "index.html";
+        return "index";
+    }
+
+    @GetMapping("/documents")
+    public String getFilesPage(){
+        return "documents";
     }
 }
