@@ -125,7 +125,7 @@ function onMessageReceived(payload) {
 
 //let typingTimeout;
 const typingTimeoutMap = new Map();
-function addMessage(message, isBottom, currentScroll = 0){
+function addMessage(message, isLoadingMessages, currentScroll = 0){
 
     let typingTimeoutUserKey = message.sender + "-timeout";
     let typingTimeout;
@@ -198,9 +198,14 @@ function addMessage(message, isBottom, currentScroll = 0){
 
             messageElement.appendChild(textElement);
 
-            if(isBottom){
+            if(isLoadingMessages){
                 messageArea.appendChild(messageElement);
-                messageArea.scrollTop = messageArea.scrollHeight;
+
+                if((messageArea.scrollTop === (messageArea.scrollHeight - messageArea.offsetHeight)) ||
+                (message.sender === username)) {
+                    messageArea.scrollTop = messageArea.scrollHeight;
+                }
+
             } else {
                 messageArea.insertBefore(messageElement, messageArea.firstChild);
                 messageArea.scrollTop = messageArea.scrollHeight - currentScroll;
