@@ -14,7 +14,7 @@ public class S3Client {
     public static void main(String[] args) {
         val clientRegion = Regions.US_EAST_2;
         val bucketName = "daimon-bucket";
-        val objectKey = "linking_learning_path_courses_script.txt";
+        val objectKey = "module5.png";
 
         try {
             val awsCredentials = new BasicAWSCredentials("AKIAJKJMMSN55TF757BQ", "6iriXMlmPaNkCEmolu4uBlQtfUAeEI/Mt8LiYYHx");

@@ -1,9 +1,33 @@
 let fileUpload = document.querySelector('#fileUpload');
+let documentsBlock = document.querySelector('#documents');
+let loadingFilesText = document.querySelector('#loading-files');
 
-function download(url) {
+function downloadDocument(url) {
     document.getElementById('my_iframe').src = url;
+}
+//download("https://daimon-bucket.s3.us-east-2.amazonaws.com/module6.png");
+
+async function getAllDocumentLinks() {
+    let response = await fetch('/document');
+    return response.json();
+}
+
+async function initializePage() {
+    let links = await getAllDocumentLinks();
+    for (link of links){
+        let li = document.createElement("li");
+        let a = document.createElement("a");
+        a.href = "#";
+        a.addEventListener('click', function(){
+              downloadDocument(link);
+        });
+        let linkName = link.substring(link.lastIndexOf("/") + 1)
+        a.innerHTML = linkName;
+        li.appendChild(a);
+        documentsBlock.appendChild(li);
+    }
+    loadingFilesText.style.display = 'none';
 };
-//download("https://daimon-bucket.s3.us-east-2.amazonaws.com/linking_learning_path_courses_script.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200227T110838Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=AKIAJKJMMSN55TF757BQ%2F20200227%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=3472dc6057dd80b6b291b9a36fdb581e04c52ccd4259811ef5403f89dd46d041");
 
 function uploadFile(){
     console.log("in upload file");
@@ -25,3 +49,4 @@ function uploadFile(){
 }
 
 fileUpload.addEventListener('change', uploadFile, true)
+document.addEventListener('DOMContentLoaded', initializePage, true)

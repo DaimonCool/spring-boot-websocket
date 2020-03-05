@@ -111,8 +111,16 @@ button.accent {
     color: #fff;
 }
 
-#username-page {
-    text-align: center;
+//#username-page {
+//    text-align: center;
+//}
+
+.title {
+   text-align: center;
+}
+
+.loading-files {
+   text-align: center;
 }
 
 .username-page-container {
