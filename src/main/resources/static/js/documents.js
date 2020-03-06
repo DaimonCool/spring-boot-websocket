@@ -16,14 +16,18 @@ async function initializePage() {
     let links = await getAllDocumentLinks();
     for (link of links){
         let li = document.createElement("li");
-        let a = document.createElement("a");
-        a.href = "#";
-        a.addEventListener('click', function(){
-              downloadDocument(link);
-        });
-        let linkName = link.substring(link.lastIndexOf("/") + 1)
-        a.innerHTML = linkName;
-        li.appendChild(a);
+//        let a = document.createElement("a");
+//        a.href = "#";
+//        a.addEventListener('click', function(){
+//              downloadDocument(link);
+//        });
+         let linkName = link.substring(link.lastIndexOf("/") + 1)
+//        a.innerHTML = linkName;
+
+        let a = "<a href='#' onclick=\"downloadDocument('" + link + "')\" >" + linkName + "</a>";
+        //li.appendChild(a);
+        console.log(a);
+        li.innerHTML = a;
         documentsBlock.appendChild(li);
     }
     loadingFilesText.style.display = 'none';
