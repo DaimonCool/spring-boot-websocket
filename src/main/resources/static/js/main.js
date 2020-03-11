@@ -28,7 +28,7 @@ function connect(event) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        let socket = new SockJS('http://localhost:8080/javatechie');
+        let socket = new SockJS('/javatechie');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
@@ -248,7 +248,7 @@ $("#messageArea").on("scroll",function() {
 
 async function loadMessages() {
     loadingElement.classList.remove('hidden');
-    let response = await fetch("http://localhost:8080/chat/1/messages?page=" + page + "&messagesNum=" + messagesNum);
+    let response = await fetch("/chat/1/messages?page=" + page + "&messagesNum=" + messagesNum);
 
     if (response.ok) {
       page++;

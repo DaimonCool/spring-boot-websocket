@@ -24,6 +24,7 @@ async function initializePage() {
 function addLink(link) {
        let li = document.createElement("li");
        let linkName = link.substring(link.lastIndexOf("/") + 1)
+       linkName = linkName.split("%20").join(" ");
 
        let a = "<a href='#' onclick=\"downloadDocument('" + link + "')\" >" + linkName + "</a>";
        li.innerHTML = a;
