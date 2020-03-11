@@ -19,3 +19,15 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:keystore/daimon.p12
+    key-store-password: Pavilion23xi
+    key-alias: daimon
+#  http:
+#    port:
+#      8080

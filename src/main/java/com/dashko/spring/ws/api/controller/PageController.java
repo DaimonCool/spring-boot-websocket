@@ -16,4 +16,9 @@ public class PageController {
         return "documents";
     }
 
+    @GetMapping("/calls")
+    public String getCallerPage(){
+        return "caller";
+    }
+
 }
