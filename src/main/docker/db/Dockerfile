@@ -1,0 +1,7 @@
+FROM postgres
+
+ENV POSTGRES_USER=daimon
+ENV POSTGRES_PASSWORD=daimon
+ENV POSTGRES_DB=chat-app
+
+EXPOSE 5432

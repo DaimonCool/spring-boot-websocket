@@ -2,11 +2,17 @@ spring:
   http:
     encoding:
       charset: UTF-8
+  flyway:
+    user: daimon
+    password: daimon
+    url: jdbc:postgresql://192.168.99.100:5432/chat-app
+    locations: filesystem:db/migration
+    out-of-order: true
   datasource:
     driverClassName: org.postgresql.Driver
-    username: daimoncool
-    password: Pavilion23xi
-    url: jdbc:postgresql://aws-daimon-db.c7flxk5cyw0g.us-east-2.rds-preview.amazonaws.com:5432/daimon_db
+    username: daimon
+    password: daimon
+    url: jdbc:postgresql://192.168.99.100:5432/chat-app
   jpa:
     properties:
       hibernate:
@@ -27,14 +33,12 @@ spring:
             client-id: 1020635298661-56u5hko6hfobk2mq968nson1qpdaadsq.apps.googleusercontent.com
             client-secret: RDom_jHPE7j58w30PTYm7KXW
 
-server:
-  port: 443
-  ssl:
-    enabled: true
-    key-store-type: PKCS12
-    key-store: classpath:keystore/daimon.p12
-    key-store-password: Pavilion23xi
-    key-alias: daimon
-#  http:
-#    port:
-#      8080
+
+#server:
+#  port: 443
+#  ssl:
+#    enabled: true
+#    key-store-type: PKCS12
+#    key-store: classpath:keystore/daimon.p12
+#    key-store-password: Pavilion23xi
+#    key-alias: daimon

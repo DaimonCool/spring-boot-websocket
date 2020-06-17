@@ -1,4 +1,4 @@
-package com.dashko.spring.ws.api.config;
+package com.dashko.spring.ws.api.listener;
 
 import com.dashko.spring.ws.api.model.dto.ChatMessageDTO;
 import com.dashko.spring.ws.api.model.dto.MessageTypeEnum;
