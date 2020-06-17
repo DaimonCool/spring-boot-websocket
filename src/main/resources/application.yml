@@ -33,7 +33,6 @@ spring:
             client-id: 1020635298661-56u5hko6hfobk2mq968nson1qpdaadsq.apps.googleusercontent.com
             client-secret: RDom_jHPE7j58w30PTYm7KXW
 
-
 #server:
 #  port: 443
 #  ssl:

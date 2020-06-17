@@ -28,13 +28,13 @@ public class Message {
     @ManyToOne
     private Chat chat;
 
-    @ManyToOne
-    @JoinColumn(name = "message_type_id")
+    @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
     public static Message from(ChatMessageDTO chatMessageDTO, long id) {
         Message message = new Message();
         message.setMessage(chatMessageDTO.getContent());
+        message.setMessageType(chatMessageDTO.getType());
         message.setSender(chatMessageDTO.getSender());
         message.setChat(new Chat(id));
         return message;

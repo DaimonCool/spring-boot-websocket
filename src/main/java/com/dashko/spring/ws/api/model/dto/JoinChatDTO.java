@@ -1,8 +1,8 @@
 package com.dashko.spring.ws.api.model.dto;
 
+import com.dashko.spring.ws.api.model.MessageType;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter @Setter
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class JoinChatDTO {
     private String sender;
-    private MessageTypeEnum type;
+    private MessageType type;
     private String content;
     private List<ChatMessageDTO> messages;
 

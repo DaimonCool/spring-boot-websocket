@@ -4,7 +4,6 @@ import com.dashko.spring.ws.api.model.Message;
 import com.dashko.spring.ws.api.model.dto.ChatMessageDTO;
 import com.dashko.spring.ws.api.repository.ChatRepository;
 import com.dashko.spring.ws.api.repository.MessageRepository;
-import com.dashko.spring.ws.api.repository.MessageTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private final MessageTypeRepository messageTypeRepository;
     private final ChatRepository chatRepository;
 
     @Transactional
@@ -32,9 +30,6 @@ public class MessageService {
         val message = Message.from(chatMessageDTO, chatId);
         val localDateTime = LocalDateTime.now(ZoneOffset.UTC);
         message.setSendDate(localDateTime);
-
-        val messageType = messageTypeRepository.findByTypeNameIgnoreCase(chatMessageDTO.getType().toString());
-        message.setMessageType(messageType);
 
         messageRepository.save(message);
     }

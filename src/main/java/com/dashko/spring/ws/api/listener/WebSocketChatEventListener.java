@@ -1,14 +1,12 @@
 package com.dashko.spring.ws.api.listener;
 
 import com.dashko.spring.ws.api.model.dto.ChatMessageDTO;
-import com.dashko.spring.ws.api.model.dto.MessageTypeEnum;
+import com.dashko.spring.ws.api.model.MessageType;
 import com.dashko.spring.ws.api.service.MessageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
@@ -32,7 +30,7 @@ public class WebSocketChatEventListener {
         String chatId = (String) headerAccessor.getSessionAttributes().get("chatId");
         if (username != null) {
             ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
-            chatMessageDTO.setType(MessageTypeEnum.LEAVE);
+            chatMessageDTO.setType(MessageType.LEAVE);
             chatMessageDTO.setSender(username);
             chatMessageDTO.setContent(username + " left!");
             messageService.saveMessage(chatMessageDTO, Long.parseLong(chatId));

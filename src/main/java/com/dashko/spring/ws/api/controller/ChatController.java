@@ -2,7 +2,7 @@ package com.dashko.spring.ws.api.controller;
 
 import com.dashko.spring.ws.api.model.dto.ChatMessageDTO;
 import com.dashko.spring.ws.api.model.dto.JoinChatDTO;
-import com.dashko.spring.ws.api.model.dto.MessageTypeEnum;
+import com.dashko.spring.ws.api.model.MessageType;
 import com.dashko.spring.ws.api.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -12,9 +12,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class ChatController {
     @MessageMapping("/chat.send/{id}")
     @SendTo("/topic/public/{id}")
     private ChatMessageDTO sendMessage(@Payload ChatMessageDTO chatMessageDTO, @DestinationVariable String id) {
-        if (!chatMessageDTO.getType().equals(MessageTypeEnum.TYPING)) {
+        if (!chatMessageDTO.getType().equals(MessageType.TYPING)) {
             messageService.saveMessage(chatMessageDTO, Long.parseLong(id));
         }
         return chatMessageDTO;
