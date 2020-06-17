@@ -21,7 +21,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "message_seq_gen")
     private long id;
 
-    private String message;
+    private String messageValue;
     private String sender;
     private LocalDateTime sendDate;
 
@@ -33,7 +33,7 @@ public class Message {
 
     public static Message from(ChatMessageDTO chatMessageDTO, long id) {
         Message message = new Message();
-        message.setMessage(chatMessageDTO.getContent());
+        message.setMessageValue(chatMessageDTO.getMessageValue());
         message.setMessageType(chatMessageDTO.getType());
         message.setSender(chatMessageDTO.getSender());
         message.setChat(new Chat(id));

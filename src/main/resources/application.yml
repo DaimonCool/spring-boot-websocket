@@ -6,7 +6,7 @@ spring:
     user: daimon
     password: daimon
     url: jdbc:postgresql://192.168.99.100:5432/chat-app
-    locations: filesystem:db/migration
+    locations: classpath:db/migration
     out-of-order: true
   datasource:
     driverClassName: org.postgresql.Driver

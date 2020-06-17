@@ -13,16 +13,15 @@ import java.time.LocalDateTime;
 @Setter
 @Data
 public class ChatMessageDTO {
-    private String content;
+    private String messageValue;
     private String sender;
     private LocalDateTime sendDate;
     private MessageType type;
 
-
     public static ChatMessageDTO from(Message message) {
         val chatMessageDTO = new ChatMessageDTO();
         chatMessageDTO.setSender(message.getSender());
-        chatMessageDTO.setContent(message.getMessage());
+        chatMessageDTO.setMessageValue(message.getMessageValue());
         chatMessageDTO.setType(message.getMessageType());
         chatMessageDTO.setSendDate(message.getSendDate());
         return chatMessageDTO;

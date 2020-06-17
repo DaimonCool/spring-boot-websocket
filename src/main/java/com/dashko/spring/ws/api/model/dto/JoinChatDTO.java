@@ -12,7 +12,7 @@ import java.util.List;
 public class JoinChatDTO {
     private String sender;
     private MessageType type;
-    private String content;
+    private String messageValue;
     private List<ChatMessageDTO> messages;
 
 }

@@ -45,7 +45,7 @@ function onConnected() {
         // Tell your username to the server
         stompClient.send("/app/chat.register/10",
             {},
-            JSON.stringify({sender: username, content: username + " joined!", type: 'JOIN'})
+            JSON.stringify({sender: username, messageValue: username + " joined!", type: 'JOIN'})
         )
     } else {
         stompClient.subscribe('/topic/public/1', onMessageReceived);
@@ -53,7 +53,7 @@ function onConnected() {
         // Tell your username to the server
         stompClient.send("/app/chat.register/1",
             {},
-            JSON.stringify({sender: username, content: username + " joined!", type: 'JOIN'})
+            JSON.stringify({sender: username, messageValue: username + " joined!", type: 'JOIN'})
         )
     }
 
@@ -74,7 +74,7 @@ function send(event) {
     if(messageContent && stompClient) {
         let chatMessage = {
             sender: username,
-            content: messageInput.value,
+            messageValue: messageInput.value,
             type: 'CHAT'
         };
 
@@ -92,7 +92,7 @@ function typing() {
     if(stompClient) {
         let chatMessage = {
             sender: username,
-            content: null,
+            messageValue: null,
             type: 'TYPING'
         };
 
@@ -160,7 +160,7 @@ function addMessage(message, isLoadingMessages, currentScroll = 0){
             return;
         }
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' is typing';
+        message.messageValue = message.sender + ' is typing';
         messageElement.id = typingId;
 
 
@@ -191,9 +191,9 @@ function addMessage(message, isLoadingMessages, currentScroll = 0){
 
     }
 
-        if(message.content != null){
+        if(message.messageValue != null){
             let textElement = document.createElement('p');
-            let messageText = document.createTextNode(message.content);
+            let messageText = document.createTextNode(message.messageValue);
             textElement.appendChild(messageText);
 
             messageElement.appendChild(textElement);

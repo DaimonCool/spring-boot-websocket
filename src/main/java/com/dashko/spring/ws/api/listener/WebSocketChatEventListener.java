@@ -32,7 +32,7 @@ public class WebSocketChatEventListener {
             ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
             chatMessageDTO.setType(MessageType.LEAVE);
             chatMessageDTO.setSender(username);
-            chatMessageDTO.setContent(username + " left!");
+            chatMessageDTO.setMessageValue(username + " left!");
             messageService.saveMessage(chatMessageDTO, Long.parseLong(chatId));
             messagingTemplate.convertAndSend("/topic/public/" + chatId, chatMessageDTO);
         }

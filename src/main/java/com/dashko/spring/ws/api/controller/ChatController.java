@@ -33,7 +33,7 @@ public class ChatController {
 
         return new JoinChatDTO(chatMessageDTO.getSender(),
                 chatMessageDTO.getType(),
-                chatMessageDTO.getContent(),
+                chatMessageDTO.getMessageValue(),
                 messages);
     }
 
