@@ -1,16 +1,14 @@
 package com.dashko.spring.ws.api.model;
 
 import com.dashko.spring.ws.api.model.dto.ChatMessageDTO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -36,6 +34,7 @@ public class Message {
         message.setMessageValue(chatMessageDTO.getMessageValue());
         message.setMessageType(chatMessageDTO.getType());
         message.setSender(chatMessageDTO.getSender());
+        message.setSendDate(chatMessageDTO.getSendDate());
         message.setChat(new Chat(id));
         return message;
     }

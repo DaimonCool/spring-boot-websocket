@@ -2,10 +2,12 @@ package com.dashko.spring.ws.api.model.dto;
 
 import com.dashko.spring.ws.api.model.Message;
 import com.dashko.spring.ws.api.model.MessageType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 

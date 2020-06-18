@@ -45,7 +45,7 @@ function onConnected() {
         // Tell your username to the server
         stompClient.send("/app/chat.register/10",
             {},
-            JSON.stringify({sender: username, messageValue: username + " joined!", type: 'JOIN'})
+            JSON.stringify({sender: username, messageValue: username + " joined!", type: 'JOIN', sendDate: getDateInISOAndUTC()})
         )
     } else {
         stompClient.subscribe('/topic/public/1', onMessageReceived);
@@ -53,12 +53,17 @@ function onConnected() {
         // Tell your username to the server
         stompClient.send("/app/chat.register/1",
             {},
-            JSON.stringify({sender: username, messageValue: username + " joined!", type: 'JOIN'})
+            JSON.stringify({sender: username, messageValue: username + " joined!", type: 'JOIN', sendDate: getDateInISOAndUTC()})
         )
     }
 
     connectingElement.classList.add('hidden');
     loadingElement.classList.remove('hidden');
+}
+
+
+function getDateInISOAndUTC() {
+    return new Date().toISOString();
 }
 
 
@@ -75,7 +80,8 @@ function send(event) {
         let chatMessage = {
             sender: username,
             messageValue: messageInput.value,
-            type: 'CHAT'
+            type: 'CHAT',
+            sendDate: getDateInISOAndUTC()
         };
 
         if(username === 'dima' || username === 'kolya') {

@@ -19,7 +19,7 @@ public class MessageController {
     @GetMapping("/chat/{id}/messages")
     public List<ChatMessageDTO> getMessages(@PathVariable int id,
                                             @RequestParam int page,
-                                            @RequestParam int messagesNum) {
-        return messageService.getLastMessages(id, page, messagesNum);
+                                            @RequestParam int numberOfMessages) {
+        return messageService.getLastMessages(id, page, numberOfMessages);
     }
 }

@@ -2,7 +2,7 @@ package com.dashko.spring.ws.api.service;
 
 import com.dashko.spring.ws.api.model.Message;
 import com.dashko.spring.ws.api.model.dto.ChatMessageDTO;
-import com.dashko.spring.ws.api.repository.ChatRepository;
+import com.dashko.spring.ws.api.model.dto.JoinChatDTO;
 import com.dashko.spring.ws.api.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -11,8 +11,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,15 +20,22 @@ import java.util.stream.Collectors;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private final ChatRepository chatRepository;
+
+    @Transactional
+    public JoinChatDTO joinChat(ChatMessageDTO chatMessageDTO, long chatId, int page, int numMessages) {
+        val messages = this.getLastMessages(chatId, page, numMessages);
+        messages.add(chatMessageDTO);
+        this.saveMessage(chatMessageDTO, chatId);
+        return new JoinChatDTO(chatMessageDTO.getSender(),
+                chatMessageDTO.getType(),
+                chatMessageDTO.getMessageValue(),
+                messages);
+    }
 
     @Transactional
     @Async
     public void saveMessage(ChatMessageDTO chatMessageDTO, long chatId) {
         val message = Message.from(chatMessageDTO, chatId);
-        val localDateTime = LocalDateTime.now(ZoneOffset.UTC);
-        message.setSendDate(localDateTime);
-
         messageRepository.save(message);
     }
 
