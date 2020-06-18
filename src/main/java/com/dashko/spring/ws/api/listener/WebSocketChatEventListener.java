@@ -27,15 +27,20 @@ public class WebSocketChatEventListener {
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String username = (String) Objects.requireNonNull(headerAccessor.getSessionAttributes()).get(USERNAME);
-        String chatId = (String) headerAccessor.getSessionAttributes().get(CHAT_ID);
+        long chatId = (long) headerAccessor.getSessionAttributes().get(CHAT_ID);
         if (username != null) {
-            ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
-            chatMessageDTO.setType(MessageType.LEAVE);
-            chatMessageDTO.setSender(username);
-            chatMessageDTO.setSendDate(LocalDateTime.now(ZoneOffset.UTC));
-            chatMessageDTO.setMessageValue(username + " left!");
-            messageService.saveMessage(chatMessageDTO, Long.parseLong(chatId));
+            ChatMessageDTO chatMessageDTO = createLeaveChatMessage(username);
+            messageService.saveMessage(chatMessageDTO, chatId);
             messagingTemplate.convertAndSend("/topic/public/" + chatId, chatMessageDTO);
         }
+    }
+
+    private ChatMessageDTO createLeaveChatMessage(String username) {
+        ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
+        chatMessageDTO.setType(MessageType.LEAVE);
+        chatMessageDTO.setSender(username);
+        chatMessageDTO.setSendDate(LocalDateTime.now(ZoneOffset.UTC));
+        chatMessageDTO.setMessageValue(username + " left!");
+        return chatMessageDTO;
     }
 }

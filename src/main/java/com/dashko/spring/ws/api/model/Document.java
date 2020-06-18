@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Document {
 
     @Id
-    @SequenceGenerator(sequenceName = "documents_id_seq", name = "documents_seq_gen", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "document_id_seq", name = "documents_seq_gen", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documents_seq_gen")
     private long id;
 
