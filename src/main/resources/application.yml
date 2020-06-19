@@ -18,8 +18,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
         physical_naming_strategy: com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy
-        jdbc:
-          time_zone: UTC
         ddl-auto: none
   servlet:
     multipart:
